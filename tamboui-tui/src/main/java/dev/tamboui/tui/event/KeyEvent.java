@@ -344,10 +344,10 @@ public final class KeyEvent implements Event {
      * Returns the Unicode code point for {@link KeyCode#CHAR} events, or {@code 0} otherwise.
      * Use this when you need the numeric value for range checks or comparisons.
      *
-     * @return the Unicode code point
+     * @return the Unicode code point, or {@code 0} for non-{@link KeyCode#CHAR} events
      */
     public int codePoint() {
-        return character;
+        return code == KeyCode.CHAR ? character : 0;
     }
 
     /**
