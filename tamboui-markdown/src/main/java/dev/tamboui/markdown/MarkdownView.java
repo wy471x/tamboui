@@ -261,12 +261,22 @@ public final class MarkdownView implements Widget {
                 continue;
             }
             if (chunk instanceof WidgetChunk) {
-                // Render block-bordered widgets (code blocks, tables) when
-                // their top is visible. Paragraph and Block clip naturally
-                // when the available height is less than the full chunk.
                 if (chunkSkip == 0) {
+                    // Top of widget is visible — render directly, clipped at the bottom.
                     Rect target = new Rect(contentArea.left(), y, contentArea.width(), visibleHeight);
                     chunk.render(target, buffer);
+                } else {
+                    // Top of widget is scrolled off-screen. Render to a scratch buffer
+                    // at full height, then copy only the visible rows into the output.
+                    Rect full = new Rect(0, 0, contentArea.width(), chunkHeight);
+                    Buffer scratch = Buffer.empty(full);
+                    chunk.render(full, scratch);
+                    for (int row = 0; row < visibleHeight; row++) {
+                        for (int col = 0; col < contentArea.width(); col++) {
+                            buffer.set(contentArea.left() + col, y + row,
+                                scratch.get(col, chunkSkip + row));
+                        }
+                    }
                 }
             } else if (chunk instanceof LinesChunk) {
                 LinesChunk lc = (LinesChunk) chunk;
