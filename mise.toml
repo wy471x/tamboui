@@ -1,5 +1,5 @@
 [tools]
-java = "latest"
+java = "graalvm-community-25.0.2"
 jbang = "latest"
 
 # ── Build ──────────────────────────────────────────────────────────────────────
