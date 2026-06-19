@@ -601,6 +601,7 @@ public class ApiLevelsSnippets {
     }
 
     void scrollableUsage() {
+        Element[] children = new Element[0];
         // tag::scrollable-usage[]
         scrollable(children)
             .scrollUpIndicator(text("[scroll up to see more...]").dim())
